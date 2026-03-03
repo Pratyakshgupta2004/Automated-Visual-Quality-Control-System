@@ -1,0 +1,7 @@
+path: C:/avqc_project/dataset
+train: train/images
+val: val/images
+test: test/images
+
+nc: 6
+names: ['missing_hole', 'mouse_bite', 'open_circuit', 'short', 'spur', 'spurious_copper']
