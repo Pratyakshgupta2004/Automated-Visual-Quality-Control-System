@@ -2,14 +2,10 @@ import cv2
 from ultralytics import YOLO
 from pathlib import Path
 import time
-
-# ─── CONFIG ───────────────────────────────────────────────
 MODEL_PATH = r"C:\avqc_project\runs\pcb_defect_v1\weights\best.pt"
 CONFIDENCE = 0.25          # Kitne % sure hone pe detect kare
 CAMERA_ID  = 0             # 0 = default webcam
-# ──────────────────────────────────────────────────────────
 
-# Colors for each defect (BGR format)
 COLORS = {
     "missing_hole"    : (0, 0, 255),      # Red
     "mouse_bite"      : (0, 165, 255),    # Orange
@@ -66,11 +62,11 @@ def run_detection():
                 cls_id          = int(box.cls[0])
                 cls_name        = model.names[cls_id]
 
-                # Color aur box draw karo
+               
                 color = COLORS.get(cls_name, (255, 255, 255))
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
-                # Label draw karo
+        
                 label = f"{cls_name} {conf:.0%}"
                 (tw, th), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
                 cv2.rectangle(frame, (x1, y1-th-8), (x1+tw+4, y1), color, -1)
@@ -78,14 +74,10 @@ def run_detection():
                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 1)
 
                 defect_count += 1
-
-        # FPS calculate karo
         frame_count += 1
         if frame_count % 10 == 0:
             fps = 10 / (time.time() - fps_time)
             fps_time = time.time()
-
-        # Status bar draw karo
         status_color = (0, 0, 255) if defect_count > 0 else (0, 255, 0)
         status_text  = f"DEFECT DETECTED: {defect_count}" if defect_count > 0 else "✓ OK - No Defects"
 
